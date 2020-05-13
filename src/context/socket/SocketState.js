@@ -6,9 +6,7 @@ import {
     SOCKET_DISCONNECT,
     SOCKET_ERROR,
     SOCKET_MSG,
-    SOCKET_RECONNECT,
-    SOCKET_SUB,
-    SOCKET_UNSUB
+    SOCKET_RECONNECT
 } from '../types'
 import io from 'socket.io-client';
 import {SOCKET} from "../server";
@@ -42,16 +40,17 @@ export const SocketState = ({children}) => {
             console.log('Connect Socket');
             dispatch({type: SOCKET_DISCONNECT, payload: false})
             dispatch({type: SOCKET_CONNECT, payload: true})
-            //socket.emit('subscribe', state.subscribe);
         });
         socket.on("quotes", (msg) => {
-            state.arr[msg.msg.symbol] = {
-                ask: msg.msg.ask,
-                bid: msg.msg.bid,
-                change: msg.msg.change,
-                symbol: msg.msg.symbol
+            console.log(msg.msg)
+            if(msg.msg!==null){
+                state.arr[msg.msg.symbol] = {
+                    ask: msg.msg.ask,
+                    bid: msg.msg.bid,
+                    change: msg.msg.change,
+                    symbol: msg.msg.symbol
+                }
             }
-            //console.log(msg.msg)
             dispatch({type: SOCKET_MSG, payload: msg.msg})
         });
         socket.on("error", (err) => {

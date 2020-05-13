@@ -10,7 +10,7 @@ import {SocketContext} from "../context/socket/SocketContext";
 
 export const SocketScreen = ({navigation}) => {
     const {get_list, get_search, list} = useContext(ListContext)
-    const {close_socket,open_socket, error_socket} = useContext(SocketContext)
+    const {close_socket,open_socket, error_socket,socket} = useContext(SocketContext)
     const [search, setSearch] = useState('')
 
     useEffect(() => {
@@ -25,8 +25,13 @@ export const SocketScreen = ({navigation}) => {
         setSearch(text)
         get_search(text)
     }
+    if(list.error !== null ){
+        return <Error text={list.error}/>
+    }
+    if(socket.error !== null ){
+        return <Error text={socket.error}/>
+    }
     return (
-        list.error == null ?
             <View style={styles.center}>
                 <View style={styles.header}>
                     <TextInput
@@ -42,7 +47,6 @@ export const SocketScreen = ({navigation}) => {
                 </View>
                 <ListSocket data={list.search.length > 0 ? list.search : list.list}/>
             </View>
-            : <Error text={list.error}/>
     )
 }
 

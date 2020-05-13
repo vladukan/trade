@@ -31,6 +31,7 @@ export const ListScreen = ({navigation}) => {
         get_search(text)
     }
 
+
     return (
         list.error == null ?
             <View style={styles.center}>
